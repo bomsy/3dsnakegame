@@ -9,9 +9,71 @@
         width: 90%;
         height: 90%;
       }
+      .infobox {
+        z-index: 10;
+        width: 400px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        border-radius: 5px 5px;
+        padding: 5px;
+      }
+      .infobox .panels {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        background-color: #ddd;
+        opacity: 0.8;
+        box-shadow: 1px 1px 5px #ccc;
+      }
+      .infobox .panels .hd {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .infobox .panels .score {
+        font-size: 50px;
+      }
+
+      .infobox label {
+        width: 1500px;
+      }
+      .infobox select {
+        width: 170px;
+      }
   </style>
   </head>
   <body>
+    <div class="infobox">
+      <div class="panels">
+        <div class="hd">controls</div>
+        <code>W</code></span> - move up </span><br/>
+        <code>S</code></span> - move down </span><br/>
+        <code>&uarr;</code></span> - move backwards </span><br/>
+        <code>&darr;</code></span> - move forward </span></br>
+        <code>&rarr;</code></span> - move right </span><br/>
+        <code>&larr;</code></span> - move left </span><br/>
+        <code>spacebar</code></span> - stop </span><br/>
+      </div>
+      <div class="panels">
+        <div class="hd">options</div>
+        <label>level: &nbsp;</label>
+        <select>
+          <option value="1">1</option>
+          <option option="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="panels">
+        <div class="hd">scores</div>
+        <div class="score">0</div>
+      </div>
+
+    </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
     <script src="http://threejs.org/examples/js/Detector.js"></script>
     <script src="main.js"></script>
