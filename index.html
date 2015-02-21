@@ -31,6 +31,10 @@
         font-weight: bold;
         margin-bottom: 5px;
       }
+      
+      .infobox code {
+        color: #ff0000;
+      }
 
       .infobox .panels .score {
         font-size: 50px;
@@ -47,7 +51,7 @@
   <body>
     <div class="infobox">
       <div class="panels">
-        <div class="hd">controls</div>
+        <div class="hd">game controls</div>
         <code>W</code></span> - move up </span><br/>
         <code>S</code></span> - move down </span><br/>
         <code>&uarr;</code></span> - move backwards </span><br/>
@@ -57,7 +61,7 @@
         <code>spacebar</code></span> - stop </span><br/>
       </div>
       <div class="panels">
-        <div class="hd">options</div>
+        <div class="hd">game options</div>
         <label>level: &nbsp;</label>
         <select>
           <option value="1">1</option>
@@ -68,7 +72,7 @@
         </select>
       </div>
       <div class="panels">
-        <div class="hd">scores</div>
+        <div class="hd">game score</div>
         <div class="score">0</div>
       </div>
 
@@ -76,6 +80,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
     <script src="http://threejs.org/examples/js/Detector.js"></script>
+    <script src="snake.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
