@@ -48,11 +48,28 @@
       }
       
       .paused {
-      
+        width: 80px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        height: 20px;
+        position: absolute;
+        z-index: 20;
+        background-color: #ddd;
+        opacity: 0.8;
+        box-shadow: 1px 1px 3px #ccc;
+        margin: 450px 700px;
+        padding: 10px 60px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 18px;     
+      }
+      .hidden {
+        display: none;
       }
   </style>
   </head>
   <body>
+    <div id="pause" class="paused hidden">Paused</div>
     <div class="infobox">
       <div class="panels">
         <div class="hd">game controls</div>
@@ -64,7 +81,7 @@
         <code>&darr;</code><span> move forward </span></br>
         <code>&rarr;</code><span> move right </span><br/>
         <code>&larr;</code><span> move left </span><br/>
-        <code>spacebar</code><span> pause </span><br/>
+      <code>spacebar</code><span> pause (use <code>arrows keys</code> to resume) </span><br/>
       </div>
       <div class="panels">
         <div class="hd">game options</div>

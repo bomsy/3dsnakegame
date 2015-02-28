@@ -9,6 +9,15 @@
   var tag = null;
   
   var gameScoreBoard = doc.getElementById('gamescore');
+  var pauseScreen = doc.getElementById('pause');
+  
+  function showPauseScreen() {
+    pauseScreen.className = 'paused';
+  }
+  
+  function hidePauseScreen() {
+    pauseScreen.className = 'paused hidden';
+  }
 
   var obstacles = []; // Array of obstacles
   
@@ -30,6 +39,8 @@
         keyActions.forward.enabled = false;
         keyActions.left.enabled = true;
         keyActions.right.enabled = true;
+        keyActions.pause.enabled = true;
+        hidePauseScreen();
       }
     },
     'forward': {
@@ -39,6 +50,8 @@
         keyActions.backward.enabled = false;
         keyActions.left.enabled = true;
         keyActions.right.enabled = true;
+        keyActions.pause.enabled = true;
+        hidePauseScreen();
       }
     },
     'right': {
@@ -48,6 +61,8 @@
         keyActions.left.enabled = false;
         keyActions.forward.enabled = true;
         keyActions.backward.enabled = true;
+        keyActions.pause.enabled = true;
+        hidePauseScreen();
       }
     },
     'left': {
@@ -57,6 +72,8 @@
         keyActions.right.enabled = false;
         keyActions.backward.enabled = true;
         keyActions.forward.enabled = true;
+        keyActions.pause.enabled = true;
+        hidePauseScreen();
       }
     },
     /*'up': {
@@ -72,9 +89,11 @@
       }
     },*/
     'pause': {
-      enabled: true,
+      enabled: false,
       action: function() {
-        snake.clear();  
+        snake.clear();
+        keyActions.pause.enabled = false;
+        showPauseScreen();
       }
     }
   };
@@ -179,7 +198,7 @@
   }
   
   function setScore() {
-    gameScoreBoard.innerHTML = Number(gameScoreBoard.innerText) + 2;
+    gameScoreBoard.innerHTML = Number(gameScoreBoard.innerText) + 1;
   }
   
   function clearScore() {
