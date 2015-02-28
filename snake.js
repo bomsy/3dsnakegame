@@ -4,7 +4,7 @@
     this.scene = scene;
     this.size = size; // snake is made up of cubes
     this.color = color;
-    this.distance = 25; // distance to move by
+    this.distance = 50; // distance to move by
     
     this.direction = null;
     this.axis = null;
@@ -24,15 +24,18 @@
     init: function() {
       this.addCube();
       this.addCube();
-      this.addCube();
       this.setDefaultPositions();
     },
     setDefaultPositions: function() {
       var self = this;
       this.snake.forEach(function(cube, index) {
-        cube.position.z = -1 * (self.size * (index + 1));
+        cube.position.z = -1 * (self.size / 2 * (index + 1));
         cube.position.y = self.size / 2;
+        cube.position.x = -500 + 25;
       });                   
+    },
+    reset: function() {
+      this.init();
     },
     selfCollision: function() {
       this.onSelfCollision();
@@ -40,7 +43,6 @@
     },
     tagCollision: function() {
       this.onTagCollision();
-      console.log('tag hit');
       this.addCube();
     },
     setCurrentTagPosition: function(position) {
@@ -70,8 +72,6 @@
             cube.position[self.axis] += (self.direction * self.distance);
             self.position = { x: cube.position.x, y: cube.position.y, z: cube.position.z };
             if (self.tagPosition) {
-              console.log(self.tagPosition);
-              console.error(self.position);
               if (self.isHit(self.position, self.tagPosition)) {
                 self.tagCollision();
               }

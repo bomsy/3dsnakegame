@@ -46,19 +46,25 @@
       .infobox select {
         width: 170px;
       }
+      
+      .paused {
+      
+      }
   </style>
   </head>
   <body>
     <div class="infobox">
       <div class="panels">
         <div class="hd">game controls</div>
-        <code>W</code></span> - move up </span><br/>
-        <code>S</code></span> - move down </span><br/>
-        <code>&uarr;</code></span> - move backwards </span><br/>
-        <code>&darr;</code></span> - move forward </span></br>
-        <code>&rarr;</code></span> - move right </span><br/>
-        <code>&larr;</code></span> - move left </span><br/>
-        <code>spacebar</code></span> - stop </span><br/>
+        <code>A</code><span> pan camera left</span><br/>
+        <code>D</code><span> pan camera right</span><br/>
+        <!--<code>W</code><span> - move up </span><br/>
+        <code>S</code><span> - move down </span><br/>-->
+        <code>&uarr;</code><span> move backwards </span><br/>
+        <code>&darr;</code><span> move forward </span></br>
+        <code>&rarr;</code><span> move right </span><br/>
+        <code>&larr;</code><span> move left </span><br/>
+        <code>spacebar</code><span> pause </span><br/>
       </div>
       <div class="panels">
         <div class="hd">game options</div>
@@ -73,10 +79,8 @@
       </div>
       <div class="panels">
         <div class="hd">game score</div>
-        <div class="score">0</div>
+        <div id="gamescore" class="score">0</div>
       </div>
-
-    </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
     <script src="http://threejs.org/examples/js/Detector.js"></script>

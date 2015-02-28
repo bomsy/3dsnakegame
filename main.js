@@ -1,11 +1,12 @@
 !(function(win, doc) {
   if (!Detector.webgl) Detector.addGetWebGLMessage();
   var scene, camera, renderer, cube;
-  var size = 500, step = 25;
+  var gridSize = 750, unitSize = 50;
   var pos;
   var raf;
   var snake = null;
   var toRender = 0;
+  var tag = null;
   
   var gameScoreBoard = doc.getElementById('gamescore');
 
@@ -18,7 +19,7 @@
     37: 'left', // <- key
     87: 'up', // W key
     83: 'down', // S key
-    32: 'stop' // spacebar
+    32: 'pause' // spacebar
   }
 
   var keyActions = {
@@ -26,27 +27,39 @@
       enabled: true,
       action: function() {
         snake.back();
+        keyActions.forward.enabled = false;
+        keyActions.left.enabled = true;
+        keyActions.right.enabled = true;
       }
     },
     'forward': {
       enabled: true,
       action: function() {
         snake.forward();
+        keyActions.backward.enabled = false;
+        keyActions.left.enabled = true;
+        keyActions.right.enabled = true;
       }
     },
     'right': {
       enabled: true,
       action: function() {
         snake.right();
+        keyActions.left.enabled = false;
+        keyActions.forward.enabled = true;
+        keyActions.backward.enabled = true;
       }
     },
     'left': {
       enabled: true,
       action: function(){ 
         snake.left();
+        keyActions.right.enabled = false;
+        keyActions.backward.enabled = true;
+        keyActions.forward.enabled = true;
       }
     },
-    'up': {
+    /*'up': {
       enabled: true,
       action: function() {
         snake.up();
@@ -57,8 +70,8 @@
       action: function() {
         snake.down();   
       }
-    },
-    'stop': {
+    },*/
+    'pause': {
       enabled: true,
       action: function() {
         snake.clear();  
@@ -88,50 +101,65 @@
   
   var interval = 10000;
   function init() {
-    //scene
+    // --- Scene ---
     scene = new THREE.Scene();
 
-    //camera
-    camera = new THREE.PerspectiveCamera(45, win.innerWidth / win.innerHeight, 1, 10000);
+    // --- Camera ---
+    camera = new THREE.PerspectiveCamera(65, win.innerWidth / win.innerHeight, 1, 10000);
     camera.position.set(500, 800, 1300);
     //camera.position.z = 500;
     camera.lookAt(new THREE.Vector3());
 
-    // grid
-
-    var geometry = new THREE.Geometry(); 
-    for ( var i = - size; i <= size; i += step ) {
-      geometry.vertices.push(new THREE.Vector3(-size, 0, i));
-      geometry.vertices.push(new THREE.Vector3(size, 0, i));
-      geometry.vertices.push(new THREE.Vector3(i, 0, -size));
-      geometry.vertices.push(new THREE.Vector3(i, 0, size));
+    // --- Grid ---
+    var gridGeometry = new THREE.Geometry(); 
+    for ( var i = -gridSize; i <= gridSize; i += unitSize ) {
+      gridGeometry.vertices.push(new THREE.Vector3(-gridSize, 0, i));
+      gridGeometry.vertices.push(new THREE.Vector3(gridSize, 0, i));
+      gridGeometry.vertices.push(new THREE.Vector3(i, 0, -gridSize));
+      gridGeometry.vertices.push(new THREE.Vector3(i, 0, gridSize));
     }
-
-    var material = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2, transparent: true } );
-    var line = new THREE.Line( geometry, material, THREE.LinePieces );
+    var gridMaterial = new THREE.LineBasicMaterial({ color: 0x000000, opacity: 0.2, transparent: true });
+    var line = new THREE.Line( gridGeometry, gridMaterial, THREE.LinePieces );
     scene.add(line);
 
-    // Snake
-    snake = new Snake(scene, step, 0xff0000);
+    // --- Snake ---
+    snake = new Snake(scene, unitSize, 0xff0000);
     snake.render();
+    snake.onTagCollision = function() {
+      scene.remove(tag);
+      tag = addTagToScene(randomAxis(), unitSize / 2, randomAxis());
+      setScore();
+    };
+    snake.onSelfCollision = function() {
+      snake.reset();
+    };
 
-    addBallToScene(300, step / 2, 105);
-    //renderer
+    tag = addTagToScene(randomAxis(), unitSize / 2, randomAxis());
+    
+    // --- Renderer ---
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(win.innerWidth - 10, win.innerHeight - 10);
-    renderer.setClearColor(0xf0f0f0); //0xf0f0f0
+    renderer.setClearColor(0xf0f0f0);
+    
     doc.body.appendChild(renderer.domElement);
 
     //var ambientLight = new THREE.AmbientLight( 0xcccccc );
     //scene.add(ambientLight);
-
+    
+    
+    // --- Directional Lighting ---
     var directionalLight = new THREE.DirectionalLight(0xffffff);
     directionalLight.position.set(500, 800, 1300).normalize();
     scene.add(directionalLight);
   }
+  
+  function randomAxis() {
+    var point = randomPoint();
+    return point > gridSize ? (gridSize - point) - 25 : point - 25;
+  }
 
   function triggerRenders() {
-    if (toRender == 7) {
+    if (toRender == 10) {
       snake.render();
       render();
       toRender = 0;
@@ -140,13 +168,13 @@
     raf = win.requestAnimationFrame(triggerRenders);
   }
 
-  function addBallToScene(x, y, z) {
-    var geometry = new THREE.SphereGeometry(step/2, step/2, step/2);
+  function addTagToScene(x, y, z) {
+    var geometry = new THREE.BoxGeometry(unitSize, unitSize, unitSize);
     var material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
     var sphere = new THREE.Mesh(geometry, material);
     sphere.position.set(x, y, z);
     scene.add(sphere);
-    snake.setCurrentTagPosition({x: x, y: y, z: z});
+    snake.setCurrentTagPosition({ x: x, y: y, z: z });
     return sphere;
   }
   
@@ -158,16 +186,14 @@
     gameScoreBoard.innerHTML = '0';
   }
 
-  function generateRandomCoordinates() {
-    return {
-      x: Math.floor(Math.random() * size),
-      y: Math.floor(Math.random() * size),
-      z: Math.floor(Math.random() * size)
-    }
+  function randomPoint() {
+    // Generate random points between 0 and the gridSize
+    // in steps for unitSize i.e 0, 50, 350, 700, 40 etc
+    var pos = Math.floor(Math.random() * gridSize * 2);
+    return pos - (pos % unitSize);
   }
 
   function onKeyPressUp(e) {
-    console.log(e.keyCode);
     var keyAction = keyActions[keys[e.keyCode]];
     if (keyAction && keyAction.enabled) {
       keyAction.action();
