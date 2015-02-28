@@ -82,6 +82,7 @@
             // check if it collides with itself
             if (self.isHit(self.position, cube.position)) {
               self.selfCollision();
+              
             };
             next = { x: temp.x, y: temp.y, z: temp.z };
           }
