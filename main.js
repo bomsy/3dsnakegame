@@ -8,13 +8,13 @@
   var renderCounter = 0;
   var tag = null;
   
-  var level = 1;
+  var speed = 15;
   
   var gameScoreBoard = doc.getElementById('gamescore');
   var pauseScreen = doc.getElementById('pause');
-  var leveloptions = doc.getElementById('leveloptions');
+  var speedoptions = doc.getElementById('speedoptions');
   
-  leveloptions.addEventListener('change', onLevelChange, false);
+  speedoptions.addEventListener('change', onSpeedChange, false);
   
   function showPauseScreen() {
     pauseScreen.className = 'paused';
@@ -180,7 +180,7 @@
   }
 
   function triggerRenders() {
-    if (renderCounter === levels[level].renderCount) {
+    if (renderCounter === speed) {
       snake.render();
       render();
       renderCounter = 0;
@@ -199,12 +199,8 @@
     return sphere;
   }
   
-  function onLevelChange(e) {
-    setLevel(e.target.value);
-  }
-  
-  function setLevel(value) {
-    level = value;
+  function onSpeedChange(e) {
+    speed = Number(e.target.value);
   }
   
   function setScore() {
