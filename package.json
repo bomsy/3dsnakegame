@@ -1,0 +1,29 @@
+{
+  "name": "3dsnakegame",
+  "version": "1.0.0",
+  "description": "Simple 3D Snake game ",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bomsy/3dsnakegame.git"
+  },
+  "keywords": [
+    "game",
+    "snake",
+    "3d",
+    "threejs"
+  ],
+  "author": "Hubert Boma Manilla <b4bomsy@gmail.com> (https://blog.bomsy.org/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bomsy/3dsnakegame/issues"
+  },
+  "homepage": "https://github.com/bomsy/3dsnakegame#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^4.2.0"
+  }
+}

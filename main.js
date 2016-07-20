@@ -8,6 +8,10 @@
   var renderCounter = 0;
   var tag = null;
   
+  var isMouseDown = false, onMouseDownPosition, theta = 45, phi = 60, onMouseDownTheta = 45, onMouseDownPhi = 60;
+  var mouse3D, ray, projector;
+  var radius = 1600;
+  
   var speed = 15;
   
   var gameScoreBoard = doc.getElementById('gamescore');
@@ -102,23 +106,6 @@
       }
     }
   };
-
-  // Game Levels
-  var levels = {
-    1: {
-      renderCount: 15
-    },
-    2: {
-      renderCount: 10
-    },
-    3: {
-      renderCount: 5
-    },
-    4: {
-      renderCount: 3
-    }
-  }
-
   
   var interval = 10000;
   function init() {
@@ -168,11 +155,20 @@
     //scene.add(ambientLight);
     
     
+    // --- Projector ---
+    projector = new THREE.Projector();
+    
+    // --- Ray ---
+    ray = new THREE.Ray( camera.position, null );
+    
     // --- Directional Lighting ---
     var directionalLight = new THREE.DirectionalLight(0xffffff);
     directionalLight.position.set(500, 800, 1300).normalize();
     scene.add(directionalLight);
   }
+  
+  
+  onMouseDownPosition = new THREE.Vector2();
   
   function randomAxis() {
     var point = randomPoint();
@@ -228,6 +224,51 @@
       raf = win.requestAnimationFrame(triggerRenders);
     }
   }
+  
+  function onMouseDown(e) {
+    e.preventDefault();
+    
+    isMouseDown = true;
+    onMouseDownTheta = theta;
+    onMouseDownPhi = phi;
+    
+    onMouseDownPosition.x = e.clientX;
+    onMouseDownPosition.y = e.clientY;
+  }
+  
+  function onMouseMove(e) {
+    e.preventDefault();
+
+    if (isMouseDown) {
+      theta = -((e.clientX - onMouseDownPosition.x) * 0.5) + onMouseDownTheta;
+      phi = ((e.clientY - onMouseDownPosition.y) * 0.5) + onMouseDownPhi;
+
+      phi = Math.min(180, Math.max(0, phi));
+
+      camera.position.x = radius * Math.sin(theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+      camera.position.y = radius * Math.sin( phi * Math.PI / 360 );
+      camera.position.z = radius * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+      camera.updateMatrix();
+    }
+
+    mouse3D = projector.unprojectVector( new THREE.Vector3( ( e.clientX / renderer.domElement.width ) * 2 - 1, 
+                                                           - ( e.clientY / renderer.domElement.height ) * 2 + 1, 0.5 ), camera );
+    //ray.direction = mouse3D.sub( camera.position ).normalize();
+
+    render();
+
+  }
+  
+  function onMouseUp(e) {
+    e.preventDefault();
+    
+    isMouseDown = false;
+    onMouseDownPosition.x = e.clientX - onMouseDownPosition.x;
+    onMouseDownPosition.y = e.clientY - onMouseDownPosition.y;
+    if (onMouseDownPosition.length() > 5) {
+      return;
+    }
+  }
 
   function render() {
     renderer.render(scene, camera);
@@ -236,4 +277,7 @@
   init();
   render();
   document.addEventListener('keyup', onKeyPressUp, false);
+  document.addEventListener('mousedown', onMouseDown, false);
+  document.addEventListener('mousemove', onMouseMove, false);
+  document.addEventListener('mouseup', onMouseUp, false);
 })(window, document);

@@ -1,78 +1,13 @@
 <!doctype html>
 <html>
   <head>
-    <style>
-      body {
-        margin: 0;
-      }
-      canvas {
-        width: 90%;
-        height: 90%;
-      }
-      .infobox {
-        z-index: 10;
-        width: 400px;
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        border-radius: 5px 5px;
-        padding: 5px;
-      }
-      .infobox .panels {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        background-color: #ddd;
-        opacity: 0.8;
-        box-shadow: 1px 1px 5px #ccc;
-      }
-      .infobox .panels .hd {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-      
-      .infobox code {
-        color: #ff0000;
-      }
-
-      .infobox .panels .score {
-        font-size: 50px;
-      }
-
-      .infobox label {
-        width: 1500px;
-      }
-      .infobox select {
-        width: 170px;
-      }
-      
-      .paused {
-        width: 80px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        height: 20px;
-        position: absolute;
-        z-index: 20;
-        background-color: #ddd;
-        opacity: 0.8;
-        box-shadow: 1px 1px 3px #ccc;
-        margin: 450px 700px;
-        padding: 10px 60px;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-size: 18px;     
-      }
-      .hidden {
-        display: none;
-      }
-  </style>
+    <link rel="stylesheet" href="main.css" />
   </head>
   <body>
     <div id="pause" class="paused hidden">Paused</div>
     <div class="infobox">
       <div class="panels">
-        <div class="hd">game controls</div>
+        <div class="hd">game controls</div><br/>
         <code>A</code><span> pan camera left</span><br/>
         <code>D</code><span> pan camera right</span><br/>
         <!--<code>W</code><span> - move up </span><br/>
@@ -84,13 +19,15 @@
       <code>spacebar</code><span> pause (use <code>arrows keys</code> to resume) </span><br/>
       </div>
       <div class="panels">
-        <div class="hd">game options</div>
+        <div class="hd">game options</div><br/>
         <label>speed: &nbsp;</label>
         <select id="speedoptions">
           <option value="15">Slow</option>
           <option value="10">Medium</option>
           <option value="5">Fast</option>
-        </select>
+        </select><br/><br/>
+        <label>obstacles: &nbsp;</label>
+        <input type="checkbox"></input>
       </div>
       <div class="panels">
         <div class="hd">game score</div>
